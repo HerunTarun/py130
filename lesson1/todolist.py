@@ -92,6 +92,22 @@ class TodoList:
     def remove_at(self, index):
         self._todos.pop(index)
 
+    def each(self, callback):
+        for item in self._todos:
+            callback(item)
+
+    def select(self, callback):
+        selected_items = TodoList(self.title)
+
+        def pick_item(todo):
+            if callback(todo):
+                selected_items.add(todo)
+
+        self.each(pick_item)
+
+        return selected_items
+
+
 empty_todo_list = TodoList('Nothing Doing')
 
 def setup():
@@ -108,35 +124,20 @@ def setup():
 
     return todo_list
 
-def step_10():
-    print('--------------------------------- Step 10')
+def step_12():
+    print('--------------------------------- Step 12')
     todo_list = setup()
 
-    print(todo_list)
+    def y_in_title(todo):
+        return 'y' in todo.title
+
+    print(todo_list.select(y_in_title))
     # ---- Today's Todos -----
     # [ ] Buy milk
+    # [ ] Go to gym
+
+    print(todo_list.select(lambda todo: todo.done))
+    # ---- Today's Todos -----
     # [X] Clean room
-    # [ ] Go to gym
 
-    todo_list.remove_at(1)
-    print(todo_list)
-    # ---- Today's Todos -----
-    # [ ] Buy milk
-    # [ ] Go to gym
-
-    todo_list.remove_at(1)
-    print(todo_list)
-    # ---- Today's Todos -----
-    # [ ] Buy milk
-
-    try:
-        todo_list.remove_at(1)
-    except IndexError:
-        print('Expected IndexError: Got it!')
-
-    todo_list.remove_at(0)
-    print(todo_list)
-    # ---- Today's Todos -----
-
-step_10()
-
+step_12()
