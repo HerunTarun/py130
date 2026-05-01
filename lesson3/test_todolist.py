@@ -120,7 +120,7 @@ class TestTodoList(unittest.TestCase):
         self.assertEqual(expected_str, str(self.todos))
 
     def test_each(self):
-        # always remember to check whether the funtion has a side effect or return value
+        # always remember to check whether the function has a side effect or return value
         # then test accordingly
         check_list = []
         self.todos.each(lambda todo: check_list.append(todo))
