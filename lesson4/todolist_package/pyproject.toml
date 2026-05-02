@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "todolist_herun"
-verson = "0.1.0"
+version = "0.1.0"
 authors = [
-    {name = "Herun", email = "herun.s@gmail.com"}
+    {name = "Herun", email = "herun.s@gmail.com"},
 ]
-description = "A working todo list application"
+description = "A fantastic todo list application."
 readme = "README.md"
 requires-python = ">=3.8"
 license = {
