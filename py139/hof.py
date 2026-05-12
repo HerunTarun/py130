@@ -90,3 +90,31 @@ def find_older_than_twenty_five(item):
 
 print(find_matching(people, find_new_yorkers))
 print(find_matching(people, find_older_than_twenty_five))
+
+# problem 10
+def create_general_repeater(action_word):
+    def nested(n, obj):
+        method = getattr(obj, action_word)
+        for _ in range(n):
+            method()
+
+
+
+    return nested
+
+bark_repeater = create_general_repeater('bark')
+drive_repeater = create_general_repeater('drive')
+
+class Dog:
+    def bark(self):
+        print('bark!')
+
+class Car:
+    def drive(self):
+        print('vroom!')
+
+fluffy = Dog()
+tom = Car()
+
+bark_repeater(5, fluffy)
+drive_repeater(5, tom)
