@@ -195,11 +195,11 @@ print(limiter())  # Still Rejected
 # problem 10
 def memoize(func):
     results = {}
-    def memoize_func(a, b):
-        if (a, b) in results.keys():
-            return results[(a, b)]
-        computed_value = func(a, b)
-        results[(a, b)] = computed_value
+    def memoize_func(*args):
+        if (args) in results.keys():
+            return results[(args)]
+        computed_value = func(*args)
+        results[(args)] = computed_value
         return computed_value
 
     return memoize_func
