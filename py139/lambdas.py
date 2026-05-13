@@ -36,11 +36,7 @@ def create_multipliers():
 for multiplier in create_multipliers():
     print(multiplier(2), end=' ')
 # This will print:
-# 6
-# 6
-# 6
-# 6
-# 6
+# 8 8 8 8 8
 # This is an example of late binding in lambdas.
 # Here, `create_multiplier()` is return a list of lambdas, iterating over a sequence of numbers from 0 to 4. When doing so, the lambda captures a reference to the loop variable i
 # However, the value of the loop variable is not captured upon each iteration of the loop
@@ -54,10 +50,43 @@ import time
 def report_time(get_time=lambda: time.time()):
     print(f"Timestamp: {get_time()}")
 
-report_time()
+report_time() # returns a floating point number representing time
 time.sleep(1)
-report_time()
+report_time() # returns a floating point number that's roughly one second later than earlier
+
+# Here, we have a lambda assigned as the default value in a parameter `get_time` in a function `report_time()`
+# It is at this moment, when the function is defined, that the lambda argument is created.
+# The expression within the lambda is not evaluated at the time of its definition, but rather when the print statement is executed
+# Thus, since we're called `report_time()` twice, with a call to `time.sleep(1)` that suspends program flow for 1 second,
+# we will find that the twin calls of `report_time()` are 1 second apart, which will be roughly reflected in their return values
 
 # problem 8
+factorial_logic = lambda f, num: 1 if num in [0, 1] else num * f(f, num -1)
+factorial = lambda n: factorial_logic(factorial_logic, n)
+print(factorial(5))
+
 # problem 9
+def compose(f, g):
+    return lambda x: f(g(x))
+
+def create_list(numbers):
+    return list(numbers)
+
+list_then_sum = compose(sum, create_list)
+
+print(list_then_sum(range(1,6)))
+
 # problem 10
+# Lexical scope is a term for the environment in which a function is defined. It is determined by the actual layout of the code, since it can be a global scope, or simply a nonlocal scope.
+# For example:
+def create_greeting():
+    greeting = 'hello'
+
+    def display_greeting():
+        print(greeting)
+
+    return display_greeting
+
+greet = create_greeting()
+greet()  # Output: Hello
+# Here, the lexical scope of `display_greeting()` is the scope of `create_greeting()`, while the lexical scope of `create_greeting()` is the global scope.
