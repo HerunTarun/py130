@@ -114,13 +114,79 @@ def calculate(a, b):
     return a + b
 
 calculate(5, 3)
-# Applying Decorator One
-# Wrapper One: Before call
-# Wrapper One: After call
+# The output would be:
 # Applying Decorator Two
+# Applying Decorator One
+# Wrapper One: Before Call
 # Wrapper Two: Before Call
+# Executing 'calculate'
 # Wrapper Two: After Call
+# Wrapper One: After Call
+# Here, we have two decorators stacked above the `calculate` function
+# Decoration order is another term for the order in which decorators are applied. In this case, this is typically from bottom-to-top
+# Thus, decorator_two is applied first, then decorates the function returned from that with decorator_one
+# Invocation order is a term for the order in which Python calls decorators when it encounters them in code.
+# The invocation order of a decorated function runs from top-to-bottom
+# In this case, the function returned by decorator_one is called first, then the function returned by decorator_two, then calculate()
 
 # problem 9
+import time
+# def memoize(func):
+#     memoize_dict = {}
+#     def wrapper(*args):
+#         if args in memoize_dict.keys():
+#             return memoize_dict[args]
+#         result = func(*args)
+#         memoize_dict[args] = result
+#         return result
+#     return wrapper
 
+class Memoize:
+    def __init__(self, func):
+        self.func = func
+        self.cache = {}
+
+    def __call__(self, *args):
+        if args in self.cache:
+            return self.cache[args]
+
+        result = self.func(*args)
+        self.cache[args] = result
+        return result
+
+@Memoize
+def slow_sum(a, b):
+    print(f"Computing {a} + {b}...")
+    time.sleep(1)
+    return a + b
+
+print(slow_sum(3, 4)) # Takes ~1 second, prints "Computing..."
+print(slow_sum(3, 4)) # Returns immediately, does not print "Computing..."
+print(slow_sum(5, 6)) # Takes ~1 second, prints "Computing..."
+print(slow_sum(5, 6)) # Returns immediately, does not print "Computing..."
 # problem 10
+
+class CountCalls:
+    def __init__(self, func):
+        self.func = func
+        self.calls = 0
+
+    def __call__(self, *args, **kwargs):
+        self.calls += 1
+        return self.func(*args, **kwargs)
+
+@CountCalls
+def say_hello():
+    print('Hello!')
+
+say_hello()
+say_hello()
+print(say_hello.calls) # 2
+
+@CountCalls
+def say_goodbye():
+    print('Goodbye!')
+
+say_goodbye()
+print(say_goodbye.calls) # 1
+print(say_hello.calls) # 2
